@@ -1,8 +1,8 @@
-import { default as React, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { v4 as uuidv4 } from 'uuid';
-import { CopyIcon, EditIcon, DeleteIcon, EyeIcon, EyeSlashIcon, GenerateIcon, SaveIcon } from './Icons';
+import { CopyIcon, DeleteIcon, EditIcon, EyeIcon, EyeSlashIcon, GenerateIcon, SaveIcon } from './Icons';
 
 const Manager = () => {
   const passwordRef = useRef();
@@ -59,7 +59,7 @@ const Manager = () => {
         theme: "dark",
       });
     } else {
-      toast('Error: Password not saved!', {
+      toast('Error: All fields (Site, Username, Password) must be at least 4 characters long', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -179,7 +179,7 @@ const Manager = () => {
                 name="password"
                 id="password"
               />
-              <span className="absolute right-3 top-1/2 transform -translate-y-1/2">
+              <span className="absolute transform -translate-y-1/2 right-3 top-1/2">
                 {showPassword ? (
                   <EyeSlashIcon className="w-5 h-5" onClick={togglePasswordVisibility} />
                 ) : (
@@ -189,11 +189,11 @@ const Manager = () => {
             </div>
           </div>
           <div className="flex flex-col items-center gap-4 md:flex-row md:gap-6">
-          <button onClick={savePassword} className="flex items-center justify-center gap-2 px-8 py-2 text-white bg-blue-600 border border-purple-700 rounded-full w-fit hover:bg-purple-300 transition-colors">
+          <button onClick={savePassword} className="flex items-center justify-center gap-2 px-8 py-2 text-white transition-colors bg-blue-600 border border-purple-700 rounded-full w-fit hover:bg-purple-300">
             <SaveIcon className="w-5 h-5" />
             Save Password
           </button>
-            <button onClick={generatePassword} className="flex items-center justify-center gap-2 px-4 py-2 text-white bg-green-600 border border-green-700 rounded-full w-fit hover:bg-green-400 transition-colors">
+            <button onClick={generatePassword} className="flex items-center justify-center gap-2 px-4 py-2 text-white transition-colors bg-green-600 border border-green-700 rounded-full w-fit hover:bg-green-400">
             <GenerateIcon className="w-5 h-5" />
             Generate Password
             </button>
