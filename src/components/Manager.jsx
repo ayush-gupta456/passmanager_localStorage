@@ -8,6 +8,7 @@ const Manager = () => {
   const passwordRef = useRef();
   const [form, setform] = useState({ site: "", username: "", password: "" });
   const [passwordArray, setPasswordArray] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     let passwords = localStorage.getItem("passwords");
@@ -97,6 +98,34 @@ const Manager = () => {
     setform({ ...form, [e.target.name]: e.target.value });
   };
 
+  const generatePassword = () => {
+    const length = 14;
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
+    let newPassword = "";
+    for (let i = 0, n = charset.length; i < length; ++i) {
+      newPassword += charset.charAt(Math.floor(Math.random() * n));
+    }
+    setform({ ...form, password: newPassword });
+    // Ensure the password field type is 'text' so the user can see the generated password
+    if (passwordRef.current.type === "password") {
+        passwordRef.current.type = "text";
+        // Optionally, toggle the eye icon if you have one that shows password visibility state
+        if (ref.current && ref.current.src.includes("icons/eyecross.png")) {
+            ref.current.src = "icons/eye.png";
+        }
+    }
+    toast('New password generated!', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  };
+
   return (
     <>
       <ToastContainer
@@ -150,16 +179,36 @@ const Manager = () => {
               </span>
             </div>
           </div>
+          <div className="flex flex-col items-center gap-4 md:flex-row md:gap-6">
           <button onClick={savePassword} className="flex items-center justify-center gap-2 px-8 py-2 text-white bg-blue-600 border border-purple-700 rounded-full w-fit hover:bg-purple-300">
             <lord-icon
               src="https://cdn.lordicon.com/jgnvfzqg.json"
               trigger="hover">
-            </lord-icon>Save</button>
+            </lord-icon>Save Password</button>
+            <button onClick={generatePassword} className="flex items-center justify-center gap-2 px-4 py-2 text-white bg-green-600 border border-green-700 rounded-full w-fit hover:bg-green-400">
+            Generate Password
+            </button>
+          </div>
         </div>
         <div className="passwords">
-          <h2 className="py-4 text-xl font-bold">Your Passwords</h2>
-          {passwordArray.length === 0 && <div>No passwords to show</div>}
-          {passwordArray.length !== 0 &&
+          <div className="flex items-center justify-between">
+            <h2 className="py-4 text-xl font-bold">Your Passwords</h2>
+            <input
+              type="text"
+              placeholder="Search passwords..."
+              className="px-4 py-1 mb-2 border border-purple-500 rounded-full md:mb-0"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          {passwordArray.filter(item =>
+            item.site.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            item.username.toLowerCase().includes(searchTerm.toLowerCase())
+          ).length === 0 && <div>No matching passwords found. {passwordArray.length > 0 && searchTerm.length > 0 ? '(Try a different search term)' : searchTerm.length === 0 && passwordArray.length === 0 ? '(No passwords saved yet)' : ''}</div>}
+          {passwordArray.filter(item =>
+            item.site.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            item.username.toLowerCase().includes(searchTerm.toLowerCase())
+          ).length !== 0 &&
             <div className="overflow-x-auto">
               <table className="w-full mb-10 overflow-hidden rounded-md table-auto">
                 <thead className="text-white bg-blue-600">
@@ -171,7 +220,10 @@ const Manager = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-purple-200">
-                  {passwordArray.map((item, index) => {
+                  {passwordArray.filter(item =>
+                    item.site.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    item.username.toLowerCase().includes(searchTerm.toLowerCase())
+                  ).map((item, index) => {
                     return <tr key={index}>
                       <td className="py-2 text-center border border-white">
                         <div className="flex items-center justify-center">

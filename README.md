@@ -1,9 +1,47 @@
-# React + Vite
+# PassKeeper - Local Password Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
+PassKeeper is a simple client-side password manager that helps you securely store and manage your website credentials. All data is stored locally in your browser's local storage, ensuring that your sensitive information doesn't leave your computer.
 
-Currently, two official plugins are available:
+## Current Features
+- **Save Credentials:** Store website URLs, usernames, and passwords.
+- **View Passwords:** Display saved credentials in an organized table.
+- **Edit Entries:** Modify existing saved credentials.
+- **Delete Entries:** Remove unwanted credentials.
+- **Copy to Clipboard:** Quickly copy site URLs, usernames, or passwords.
+- **Show/Hide Password:** Toggle password visibility for easy viewing or protection.
+- **Local Storage:** All data is saved directly in your browser.
+- **Password Generation:** Generate strong, random passwords directly within the app.
+- **Search/Filter Passwords:** Quickly find specific credentials by searching site names or usernames.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-# password-manager_-local-storage-
+## Tech Stack
+- React
+- Vite
+- Tailwind CSS
+- uuid (for generating unique IDs)
+- react-toastify (for notifications)
+
+## How to Run Locally
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/passop.git
+   # Or your specific repository URL
+   cd passop
+   # Or your specific repository directory name
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+   The application will typically be available at `http://localhost:5173` (or the port Vite assigns).
+
+## Planned Features
+(None currently - all selected features implemented for this iteration)
+
+## Author
+This project was initially created by Ayush Gupta. Enhancements by Jules (AI Software Engineer).
+(Note: You can update this section as you see fit)
