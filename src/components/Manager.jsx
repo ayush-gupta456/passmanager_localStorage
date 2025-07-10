@@ -33,25 +33,22 @@ const Manager = () => {
 
   const showPassword = () => {
     if (passwordRef.current) {
-      if (ref.current && typeof ref.current.src === 'string') {
-        if (ref.current.src.includes("icons/eyecross.png")) {
-          ref.current.src = "icons/eye.png";
-          passwordRef.current.type = "password";
-        } else {
-          passwordRef.current.type = "text";
-          ref.current.src = "icons/eyecross.png";
-        }
-      } else {
-        // Fallback if eye icon ref is not as expected, just toggle type
-        passwordRef.current.type = passwordRef.current.type === "password" ? "text" : "password";
+      const isPasswordHidden = passwordRef.current.type === "password";
+      passwordRef.current.type = isPasswordHidden ? "text" : "password";
+      
+      // Update eye icon if ref exists
+      if (ref.current && ref.current.src) {
+        ref.current.src = isPasswordHidden ? "icons/eye.png" : "icons/eyecross.png";
       }
     }
   };
 
   const savePassword = () => {
     if (form.site.length > 3 && form.username.length > 3 && form.password.length > 3) {
-      setPasswordArray([...passwordArray, { ...form, id: uuidv4() }]);
-      localStorage.setItem("passwords", JSON.stringify([...passwordArray, { ...form, id: uuidv4() }]));
+      const newPassword = { ...form, id: uuidv4() };
+      const updatedPasswords = [...passwordArray, newPassword];
+      setPasswordArray(updatedPasswords);
+      localStorage.setItem("passwords", JSON.stringify(updatedPasswords));
       setform({ site: "", username: "", password: "" });
       toast('Password Saved!', {
         position: "top-right",
@@ -113,14 +110,11 @@ const Manager = () => {
     }
     setform({ ...form, password: newPassword });
 
+    // Show the generated password by making the input type 'text'
     if (passwordRef.current) {
-      // Ensure the password field type is 'text' so the user can see the generated password
       passwordRef.current.type = "text";
-      // Optionally, toggle the eye icon if you have one that shows password visibility state
-      if (ref.current && typeof ref.current.src === 'string' && ref.current.src.includes("icons/eyecross.png")) {
-        ref.current.src = "icons/eye.png";
-      } else if (ref.current && typeof ref.current.src === 'string') {
-        // If it's not eyecross, but we made password visible, ensure it's the open eye
+      // Update eye icon to show password is visible
+      if (ref.current && ref.current.src) {
         ref.current.src = "icons/eye.png";
       }
     }
@@ -149,10 +143,8 @@ const Manager = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
-        transition="Bounce"
+        theme="dark"
       />
-      <ToastContainer />
       <div className="absolute inset-0 w-full h-full -z-10 bg-purple-50 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
         <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-purple-400 opacity-20 blur-[100px]"></div>
       </div>
