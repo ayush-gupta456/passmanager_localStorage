@@ -164,7 +164,7 @@ const Manager = () => {
         <p className="text-lg text-center text-purple-900">
           Your own Password Manager
         </p>
-        <div className="flex flex-col items-center gap-6 p-4 text-black md:gap-8 md:p-6">
+        <form className="flex flex-col items-center gap-6 p-4 text-black md:gap-8 md:p-6" onSubmit={(e) => e.preventDefault()}>
           <input value={form.site} onChange={handleChange} placeholder="Enter website URL*"
             className="w-full p-4 py-1 border border-purple-500 rounded-full"
             type="text"
@@ -200,7 +200,7 @@ const Manager = () => {
             Generate Password
             </button>
           </div>
-        </div>
+        </form>
         <div className="passwords">
           <div className="flex items-center justify-between">
             <h2 className="py-4 text-xl font-bold">Your Passwords</h2>
