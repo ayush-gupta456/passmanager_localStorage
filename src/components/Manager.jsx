@@ -10,6 +10,7 @@ const Manager = () => {
   const [passwordArray, setPasswordArray] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [visiblePasswords, setVisiblePasswords] = useState({});
 
   useEffect(() => {
     let passwords = localStorage.getItem("passwords");
@@ -96,6 +97,13 @@ const Manager = () => {
 
   const handleChange = (e) => {
     setform({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const togglePasswordVisibilityInTable = (id) => {
+    setVisiblePasswords(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
   };
 
   const generatePassword = () => {
@@ -240,8 +248,17 @@ const Manager = () => {
                       </td>
                       <td className="py-2 text-center border border-white">
                         <div className="flex items-center justify-center gap-2">
-                          <span className="font-mono">{'•'.repeat(item.password.length)}</span>
-                          <CopyIcon className="w-4 h-4" onClick={() => { copyText(item.password) }} />
+                          <span className="font-mono">
+                            {visiblePasswords[item.id] ? item.password : '•'.repeat(item.password.length)}
+                          </span>
+                          <div className="flex gap-1">
+                            {visiblePasswords[item.id] ? (
+                              <EyeSlashIcon className="w-4 h-4" onClick={() => togglePasswordVisibilityInTable(item.id)} />
+                            ) : (
+                              <EyeIcon className="w-4 h-4" onClick={() => togglePasswordVisibilityInTable(item.id)} />
+                            )}
+                            <CopyIcon className="w-4 h-4" onClick={() => { copyText(item.password) }} />
+                          </div>
                         </div>
                       </td>
                       <td className="justify-center py-2 text-center border border-white">
