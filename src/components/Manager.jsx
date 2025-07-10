@@ -32,13 +32,19 @@ const Manager = () => {
   };
 
   const showPassword = () => {
-    passwordRef.current.type = "text";
-    if (ref.current.src.includes("icons/eyecross.png")) {
-      ref.current.src = "icons/eye.png";
-      passwordRef.current.type = "password";
-    } else {
-      passwordRef.current.type = "text";
-      ref.current.src = "icons/eyecross.png";
+    if (passwordRef.current) {
+      if (ref.current && typeof ref.current.src === 'string') {
+        if (ref.current.src.includes("icons/eyecross.png")) {
+          ref.current.src = "icons/eye.png";
+          passwordRef.current.type = "password";
+        } else {
+          passwordRef.current.type = "text";
+          ref.current.src = "icons/eyecross.png";
+        }
+      } else {
+        // Fallback if eye icon ref is not as expected, just toggle type
+        passwordRef.current.type = passwordRef.current.type === "password" ? "text" : "password";
+      }
     }
   };
 
@@ -106,14 +112,19 @@ const Manager = () => {
       newPassword += charset.charAt(Math.floor(Math.random() * n));
     }
     setform({ ...form, password: newPassword });
-    // Ensure the password field type is 'text' so the user can see the generated password
-    if (passwordRef.current.type === "password") {
-        passwordRef.current.type = "text";
-        // Optionally, toggle the eye icon if you have one that shows password visibility state
-        if (ref.current && ref.current.src.includes("icons/eyecross.png")) {
-            ref.current.src = "icons/eye.png";
-        }
+
+    if (passwordRef.current) {
+      // Ensure the password field type is 'text' so the user can see the generated password
+      passwordRef.current.type = "text";
+      // Optionally, toggle the eye icon if you have one that shows password visibility state
+      if (ref.current && typeof ref.current.src === 'string' && ref.current.src.includes("icons/eyecross.png")) {
+        ref.current.src = "icons/eye.png";
+      } else if (ref.current && typeof ref.current.src === 'string') {
+        // If it's not eyecross, but we made password visible, ensure it's the open eye
+        ref.current.src = "icons/eye.png";
+      }
     }
+
     toast('New password generated!', {
       position: "top-right",
       autoClose: 3000,
