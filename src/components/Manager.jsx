@@ -192,10 +192,10 @@ const Manager = () => {
           </div>
           <div className="flex flex-col items-center gap-4 md:flex-row md:gap-6">
           <button onClick={savePassword} className="flex items-center justify-center gap-2 px-8 py-2 text-white bg-blue-600 border border-purple-700 rounded-full w-fit hover:bg-purple-300">
-            <lord-icon
+            {/* <lord-icon
               src="https://cdn.lordicon.com/jgnvfzqg.json"
               >
-            </lord-icon>Save Password</button>
+            </lord-icon> */}Save Password</button>
             <button onClick={generatePassword} className="flex items-center justify-center gap-2 px-4 py-2 text-white bg-green-600 border border-green-700 rounded-full w-fit hover:bg-green-400">
             Generate Password
             </button>
@@ -240,48 +240,50 @@ const Manager = () => {
                         <div className="flex items-center justify-center">
                           <a href={item.site} target="_blank" >{item.site}</a>
                           <div className="cursor-pointer lordiconcopy size-7" onClick={() => { copyText(item.site) }}>
-                            <lord-icon
+                            {/* <lord-icon
                               style={{ "width": "25px", "height": "25px", "paddingTop": "3px", "paddingLeft": "3px" }}
                               src="https://cdn.lordicon.com/iykgtsbt.json" trigger="hover">
-                            </lord-icon>
+                            </lord-icon> */} (copy)
                           </div>
                         </div>
                       </td>
                       <td className="py-2 text-center border border-white">
                         <div className="flex items-center justify-center">{item.username}
                           <div className="cursor-pointer lordiconcopy size-7" onClick={() => { copyText(item.username) }}>
-                            <lord-icon
+                            {/* <lord-icon
                               style={{ "width": "25px", "height": "25px", "paddingTop": "3px", "paddingLeft": "3px" }}
                               src="https://cdn.lordicon.com/iykgtsbt.json" trigger="hover">
-                            </lord-icon>
+                            </lord-icon> */} (copy)
                           </div>
                         </div>
                       </td>
                       <td className="py-2 text-center border border-white">
                         <div className="flex items-center justify-center">{item.password}
                           <div className="cursor-pointer lordiconcopy size-7" onClick={() => { copyText(item.password) }}>
-                            <lord-icon
+                            {/* <lord-icon
                               style={{ "width": "25px", "height": "25px", "paddingTop": "3px", "paddingLeft": "3px" }}
                               src="https://cdn.lordicon.com/iykgtsbt.json" trigger="hover">
-                            </lord-icon>
+                            </lord-icon> */} (copy)
                           </div>
                         </div>
                       </td>
                       <td className="justify-center py-2 text-center border border-white">
                         <span className="mx-1 cursor-pointer " onClick={() => { editPassword(item.id) }}>
-                          <lord-icon
+                          {/* <lord-icon
                             src="https://cdn.lordicon.com/gwlusjdu.json"
                             trigger="hover"
                             style={{ "width": "25px", "height": "25px" }}
                           >
-                          </lord-icon> </span>
+                          </lord-icon> */} (edit)
+                        </span>
                         <span className="mx-1 cursor-pointer" onClick={() => { deletePassword(item.id) }}>
-                          <lord-icon
+                          {/* <lord-icon
                             src="https://cdn.lordicon.com/skkahier.json"
                             trigger="hover"
                             style={{ "width": "25px", "height": "25px" }}
                           >
-                          </lord-icon> </span>
+                          </lord-icon> */} (del)
+                        </span>
                       </td>
                     </tr>;
                   })}
