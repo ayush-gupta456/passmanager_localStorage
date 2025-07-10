@@ -2,13 +2,14 @@ import { default as React, useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { v4 as uuidv4 } from 'uuid';
+import { CopyIcon, EditIcon, DeleteIcon, EyeIcon, EyeSlashIcon, GenerateIcon, SaveIcon } from './Icons';
 
 const Manager = () => {
-  const ref = useRef();
   const passwordRef = useRef();
   const [form, setform] = useState({ site: "", username: "", password: "" });
   const [passwordArray, setPasswordArray] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     let passwords = localStorage.getItem("passwords");
@@ -31,15 +32,11 @@ const Manager = () => {
     navigator.clipboard.writeText(text);
   };
 
-  const showPassword = () => {
+  const togglePasswordVisibility = () => {
     if (passwordRef.current) {
       const isPasswordHidden = passwordRef.current.type === "password";
       passwordRef.current.type = isPasswordHidden ? "text" : "password";
-      
-      // Update eye icon if ref exists
-      if (ref.current && ref.current.src) {
-        ref.current.src = isPasswordHidden ? "icons/eye.png" : "icons/eyecross.png";
-      }
+      setShowPassword(!showPassword);
     }
   };
 
@@ -113,10 +110,7 @@ const Manager = () => {
     // Show the generated password by making the input type 'text'
     if (passwordRef.current) {
       passwordRef.current.type = "text";
-      // Update eye icon to show password is visible
-      if (ref.current && ref.current.src) {
-        ref.current.src = "icons/eye.png";
-      }
+      setShowPassword(true);
     }
 
     toast('New password generated!', {
@@ -172,23 +166,27 @@ const Manager = () => {
             />
             <div className="relative">
               <input ref={passwordRef} value={form.password} onChange={handleChange} placeholder="Enter Password*"
-                className="w-full p-4 py-1 border border-purple-500 rounded-full"
+                className="w-full p-4 py-1 pr-10 border border-purple-500 rounded-full"
                 type="password"
                 name="password"
                 id="password"
               />
-              <span className="absolute right-[3px] top-[4px] cursor-pointer" onClick={showPassword}>
-                <img ref={ref} className="p-1" width={26} src="icons/eyecross.png" alt="eye" />
+              <span className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                {showPassword ? (
+                  <EyeSlashIcon className="w-5 h-5" onClick={togglePasswordVisibility} />
+                ) : (
+                  <EyeIcon className="w-5 h-5" onClick={togglePasswordVisibility} />
+                )}
               </span>
             </div>
           </div>
           <div className="flex flex-col items-center gap-4 md:flex-row md:gap-6">
-          <button onClick={savePassword} className="flex items-center justify-center gap-2 px-8 py-2 text-white bg-blue-600 border border-purple-700 rounded-full w-fit hover:bg-purple-300">
-            {/* <lord-icon
-              src="https://cdn.lordicon.com/jgnvfzqg.json"
-              >
-            </lord-icon> */}Save Password</button>
-            <button onClick={generatePassword} className="flex items-center justify-center gap-2 px-4 py-2 text-white bg-green-600 border border-green-700 rounded-full w-fit hover:bg-green-400">
+          <button onClick={savePassword} className="flex items-center justify-center gap-2 px-8 py-2 text-white bg-blue-600 border border-purple-700 rounded-full w-fit hover:bg-purple-300 transition-colors">
+            <SaveIcon className="w-5 h-5" />
+            Save Password
+          </button>
+            <button onClick={generatePassword} className="flex items-center justify-center gap-2 px-4 py-2 text-white bg-green-600 border border-green-700 rounded-full w-fit hover:bg-green-400 transition-colors">
+            <GenerateIcon className="w-5 h-5" />
             Generate Password
             </button>
           </div>
@@ -229,53 +227,28 @@ const Manager = () => {
                   ).map((item, index) => {
                     return <tr key={index}>
                       <td className="py-2 text-center border border-white">
-                        <div className="flex items-center justify-center">
-                          <a href={item.site} target="_blank" >{item.site}</a>
-                          <div className="cursor-pointer lordiconcopy size-7" onClick={() => { copyText(item.site) }}>
-                            {/* <lord-icon
-                              style={{ "width": "25px", "height": "25px", "paddingTop": "3px", "paddingLeft": "3px" }}
-                              src="https://cdn.lordicon.com/iykgtsbt.json" trigger="hover">
-                            </lord-icon> */} (copy)
-                          </div>
+                        <div className="flex items-center justify-center gap-2">
+                          <a href={item.site} target="_blank" className="text-blue-600 hover:underline">{item.site}</a>
+                          <CopyIcon className="w-4 h-4" onClick={() => { copyText(item.site) }} />
                         </div>
                       </td>
                       <td className="py-2 text-center border border-white">
-                        <div className="flex items-center justify-center">{item.username}
-                          <div className="cursor-pointer lordiconcopy size-7" onClick={() => { copyText(item.username) }}>
-                            {/* <lord-icon
-                              style={{ "width": "25px", "height": "25px", "paddingTop": "3px", "paddingLeft": "3px" }}
-                              src="https://cdn.lordicon.com/iykgtsbt.json" trigger="hover">
-                            </lord-icon> */} (copy)
-                          </div>
+                        <div className="flex items-center justify-center gap-2">
+                          <span>{item.username}</span>
+                          <CopyIcon className="w-4 h-4" onClick={() => { copyText(item.username) }} />
                         </div>
                       </td>
                       <td className="py-2 text-center border border-white">
-                        <div className="flex items-center justify-center">{item.password}
-                          <div className="cursor-pointer lordiconcopy size-7" onClick={() => { copyText(item.password) }}>
-                            {/* <lord-icon
-                              style={{ "width": "25px", "height": "25px", "paddingTop": "3px", "paddingLeft": "3px" }}
-                              src="https://cdn.lordicon.com/iykgtsbt.json" trigger="hover">
-                            </lord-icon> */} (copy)
-                          </div>
+                        <div className="flex items-center justify-center gap-2">
+                          <span className="font-mono">{'•'.repeat(item.password.length)}</span>
+                          <CopyIcon className="w-4 h-4" onClick={() => { copyText(item.password) }} />
                         </div>
                       </td>
                       <td className="justify-center py-2 text-center border border-white">
-                        <span className="mx-1 cursor-pointer " onClick={() => { editPassword(item.id) }}>
-                          {/* <lord-icon
-                            src="https://cdn.lordicon.com/gwlusjdu.json"
-                            trigger="hover"
-                            style={{ "width": "25px", "height": "25px" }}
-                          >
-                          </lord-icon> */} (edit)
-                        </span>
-                        <span className="mx-1 cursor-pointer" onClick={() => { deletePassword(item.id) }}>
-                          {/* <lord-icon
-                            src="https://cdn.lordicon.com/skkahier.json"
-                            trigger="hover"
-                            style={{ "width": "25px", "height": "25px" }}
-                          >
-                          </lord-icon> */} (del)
-                        </span>
+                        <div className="flex items-center justify-center gap-2">
+                          <EditIcon className="w-4 h-4" onClick={() => { editPassword(item.id) }} />
+                          <DeleteIcon className="w-4 h-4" onClick={() => { deletePassword(item.id) }} />
+                        </div>
                       </td>
                     </tr>;
                   })}
