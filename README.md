@@ -6,7 +6,7 @@
 
 ## 🚀 Live Demo
 
-👉 [Launch PassKeeper](https://ayush-localpassmanager.netlify.app/)
+👉 [Launch PassKeeper](https://passwordmanager-local.netlify.app/)
 
 ---
 
